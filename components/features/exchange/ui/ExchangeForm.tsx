@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { useApiClient } from "@/components/shared/hooks/useApiClient";
 import { Wallet, ExchangeRateData, ExchangeQuote } from "../types";
+import Button from "@/components/shared/ui/Button";
+import Tabs from "@/components/shared/ui/Tabs";
+import Input from "@/components/shared/ui/Input";
 
 interface ExchangeFormProps {
    wallets: Wallet[];
@@ -327,7 +330,7 @@ export default function ExchangeForm({
    };
 
    return (
-      <div className="rounded-lg border border-gray-200 bg-gray-100 p-8 shadow-lg">
+      <div className="rounded-lg border border-gray-200 bg-gray-100 p-8">
          <form
             onSubmit={handleExchange}
             className="space-y-6"
@@ -375,36 +378,18 @@ export default function ExchangeForm({
             </div>
 
             {/* 살래요 / 팔래요 탭 */}
-            <div className="relative rounded-lg border border-gray-300 bg-gray-100 p-1">
-               <div className="flex gap-2">
-                  <button
-                     type="button"
-                     onClick={() => {
-                        setMode("buy");
-                        setQuote(null);
-                        setForexAmount("");
-                     }}
-                     className={`flex-1 rounded-lg py-4 text-center text-lg font-semibold transition-colors ${
-                        mode === "buy" ? "bg-red-600 text-white" : "bg-transparent text-gray-600"
-                     }`}
-                  >
-                     살래요
-                  </button>
-                  <button
-                     type="button"
-                     onClick={() => {
-                        setMode("sell");
-                        setQuote(null);
-                        setForexAmount("");
-                     }}
-                     className={`relative flex-1 rounded-lg py-4 text-center text-lg font-semibold transition-colors ${
-                        mode === "sell" ? "bg-blue-600 text-white" : "bg-transparent text-gray-600"
-                     }`}
-                  >
-                     팔래요
-                  </button>
-               </div>
-            </div>
+            <Tabs
+               tabs={[
+                  { id: "buy", label: "살래요", activeColor: "red" },
+                  { id: "sell", label: "팔래요", activeColor: "blue" },
+               ]}
+               activeTab={mode}
+               onChange={(tabId) => {
+                  setMode(tabId as ExchangeMode);
+                  setQuote(null);
+                  setForexAmount("");
+               }}
+            />
 
             {/* 매수/매도 금액 입력 */}
             <div>
@@ -425,8 +410,8 @@ export default function ExchangeForm({
                      }}
                      placeholder={
                         mode === "buy"
-                           ? `30 ${getCurrencyName(selectedCurrency)} 사기`
-                           : `30 ${getCurrencyName(selectedCurrency)} 팔기`
+                           ? `${getCurrencyName(selectedCurrency)} 사기`
+                           : `${getCurrencyName(selectedCurrency)} 팔기`
                      }
                      className="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-4 text-lg font-medium text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                      required
@@ -506,13 +491,17 @@ export default function ExchangeForm({
             )}
 
             {/* 환전하기 버튼 */}
-            <button
+            <Button
                type="submit"
+               variant="primary"
+               size="lg"
+               fullWidth
                disabled={loading || !quote || !forexAmount}
-               className="w-full rounded-lg bg-gray-800 px-6 py-4 text-lg font-semibold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+               loading={loading}
+               className="bg-gray-800 hover:bg-gray-900 focus:ring-gray-800"
             >
-               {loading ? "처리 중..." : "환전하기"}
-            </button>
+               환전하기
+            </Button>
          </form>
       </div>
    );

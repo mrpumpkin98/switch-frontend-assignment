@@ -1,6 +1,7 @@
 "use client";
 
 import { ExchangeRateData } from "../types";
+import Card from "@/components/shared/ui/Card";
 
 interface ExchangeRateProps {
    exchangeRates: ExchangeRateData[];
@@ -25,9 +26,9 @@ export default function ExchangeRate({ exchangeRates }: ExchangeRateProps) {
    return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
          {exchangeRates.map((rate) => (
-            <div
+            <Card
                key={rate.currency}
-               className="rounded-lg border border-gray-200 bg-white p-6"
+               className="p-6"
             >
                <div className="mb-4 flex items-start justify-between">
                   <div className="text-lg font-semibold text-gray-900">{rate.currency}</div>
@@ -67,7 +68,7 @@ export default function ExchangeRate({ exchangeRates }: ExchangeRateProps) {
                      {rate.changePercentage.toFixed(1)}%
                   </span>
                </div>
-            </div>
+            </Card>
          ))}
       </div>
    );
