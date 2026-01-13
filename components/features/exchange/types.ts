@@ -34,3 +34,14 @@ export interface ExchangeOrder {
   forexAmount: number; // 외화 금액
 }
 
+// 환전 내역 타입
+export interface OrderHistory {
+  orderId: number;
+  fromCurrency: string;
+  fromAmount: number;
+  toCurrency: string;
+  toAmount: number;
+  appliedRate: number;
+  orderedAt: string;
+}
+
