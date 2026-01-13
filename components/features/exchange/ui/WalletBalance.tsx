@@ -8,31 +8,6 @@ interface WalletBalanceProps {
 }
 
 export default function WalletBalance({ wallets, totalKrwBalance }: WalletBalanceProps) {
-  const formatCurrency = (amount: number, currency: string) => {
-    if (!currency || currency.trim() === "") {
-      return new Intl.NumberFormat("ko-KR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }).format(amount);
-    }
-
-    try {
-      return new Intl.NumberFormat("ko-KR", {
-        style: "currency",
-        currency: currency,
-        minimumFractionDigits: currency === "KRW" ? 0 : 2,
-        maximumFractionDigits: currency === "KRW" ? 0 : 2,
-      }).format(amount);
-    } catch (error) {
-      return (
-        new Intl.NumberFormat("ko-KR", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }).format(amount) + ` ${currency}`
-      );
-    }
-  };
-
   const getCurrencySymbol = (currency: string) => {
     const symbols: Record<string, string> = {
       KRW: "₩",
@@ -43,9 +18,9 @@ export default function WalletBalance({ wallets, totalKrwBalance }: WalletBalanc
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-gray-100 p-6 shadow-sm">
       <h2 className="mb-4 text-xl font-semibold text-gray-900">내 지갑</h2>
-      <div className="space-y-3">
+      <div className="flex-1 space-y-3">
         {wallets.length > 0 ? (
           wallets.map((wallet) => (
             <div
@@ -62,7 +37,7 @@ export default function WalletBalance({ wallets, totalKrwBalance }: WalletBalanc
           <div className="text-center text-gray-500">지갑 정보가 없습니다.</div>
         )}
       </div>
-      <div className="mt-6 border-t border-gray-200 pt-4">
+      <div className="mt-auto border-t border-gray-200 pt-4">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-600">총 보유 자산</span>
           <span className="text-xl font-bold text-gray-900">
