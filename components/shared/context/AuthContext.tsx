@@ -148,7 +148,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
                // 토큰에서 이메일 추출 (JWT 디코딩) 또는 API 호출
                // 여기서는 간단하게 토큰 존재 여부만 확인
-               dispatch({ type: "SET_LOADING", payload: false });
+               // 토큰이 있으면 인증된 상태로 설정
+               // 임시로 빈 사용자 정보로 설정 (실제로는 토큰에서 추출하거나 API 호출)
+               const userInfo: UserInfo = {
+                  id: "user", // 임시 ID
+                  email: "", // 토큰에서 추출하거나 API 호출 필요
+               };
+               dispatch({ type: "SET_USER", payload: userInfo });
             } catch (error) {
                TokenManager.removeAccessToken();
                dispatch({ type: "LOGOUT" });
